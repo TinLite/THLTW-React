@@ -1,25 +1,17 @@
 import { createBrowserRouter } from "react-router-dom";
-import { Login } from "./Login";
-import App from "./App";
-import { Hello } from "./Hello";
-import { Car } from "./Car";
+import MainLayout from "./layouts/layout";
+import { ProductListingByGroup } from "./pages/product/product-listing-by-group";
 
 export const route = createBrowserRouter([
     {
         path: "/",
-        element: <App />,
-    },
-    {
-        path: "/login",
-        element: <Login />,
-    },
-    {
-        path: "/hello",
-        element: <Hello />,
-    },
-    {
-        path: "/car",
-        element: <Car />,
+        element: <MainLayout />,
+        children: [
+            {
+                path: "/nhom/:id",
+                element: <ProductListingByGroup />
+            }
+        ]
     },
     {
         path: "*",
