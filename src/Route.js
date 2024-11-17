@@ -1,6 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "./layouts/layout";
-import { ProductListingByGroup } from "./pages/product/product-listing-by-group";
+import { PageProductListingByGroup } from "./pages/product/product-listing-by-group";
+import { PageProductDetail } from "./pages/product/product-detail";
+import { PageLogin } from "./pages/auth/login";
+import { PageProfile } from "./pages/user/profile";
 
 export const route = createBrowserRouter([
     {
@@ -9,7 +12,19 @@ export const route = createBrowserRouter([
         children: [
             {
                 path: "/nhom/:id",
-                element: <ProductListingByGroup />
+                element: <PageProductListingByGroup />
+            },
+            {
+                path: "/sanpham/:id",
+                element: <PageProductDetail />
+            },
+            {
+                path: '/login',
+                element: <PageLogin />
+            },
+            {
+                path: '/profile',
+                element: <PageProfile />
             }
         ]
     },

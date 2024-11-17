@@ -1,5 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../context/user-context";
+import { logout } from "../repositories/authentication-repository";
 
 function NhomDropdown() {
     const [dsNhom, setDsNhom] = useState([]);
@@ -23,18 +25,22 @@ function NhomDropdown() {
                 Nhóm
             </a>
             <ul className="dropdown-menu">
-                {dsNhom.map((nhom) => (
-                    <li key={nhom.id}><Link className="dropdown-item" to={`/nhom/${nhom.idnhom}`}>{nhom.ten}</Link></li>
+                {dsNhom.map((nhom, index) => (
+                    <li key={index}>
+                        <Link className="dropdown-item" to={`/nhom/${nhom.idnhom}`}>{nhom.ten}</Link>
+                    </li>
                 ))}
-                {
+                {/* {
                     dsNhom.length === 0 && <li><a className="dropdown-item disabled" href="#">Rỗng</a></li>
-                }
+                } */}
             </ul>
         </li>
     )
 }
 
 export function MainNavBar() {
+    const { user, setUser } = useContext(UserContext);
+
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
@@ -48,28 +54,20 @@ export function MainNavBar() {
                             <NavLink className={({ isActive }) => `nav-link${isActive ? " active" : ""}`} aria-current="page" to="/">Trang chủ</NavLink>
                         </li>
                         <NhomDropdown />
-                        {/* <li className="nav-item">
-                            <a className="nav-link" href="#">Link</a>
+                        <li>
+                            <NavLink className="nav-link" to="/profile">Thông tin tài khoản</NavLink>
                         </li>
-                        <li className="nav-item dropdown">
-                            <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Dropdown
-                            </a>
-                            <ul className="dropdown-menu">
-                                <li><a className="dropdown-item" href="#">Action</a></li>
-                                <li><a className="dropdown-item" href="#">Another action</a></li>
-                                <li><hr className="dropdown-divider"/></li>
-                                <li><a className="dropdown-item" href="#">Something else here</a></li>
-                            </ul>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link disabled" aria-disabled="true">Disabled</a>
-                        </li> */}
                     </ul>
-                    <form className="d-flex" role="search">
-                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-                        <button className="btn btn-outline-success" type="submit">Search</button>
-                    </form>
+                    {user ?
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}>
+                            <div>Xin chào, {user.username}.</div>
+                            <button className="btn btn-link" onClick={() => logout().then(()=> setUser(undefined))}>Đăng xuất</button>
+                        </div> :
+                        <NavLink to='/login' className="btn btn-outline-primary">Đăng nhập</NavLink>
+                    }
                 </div>
             </div>
         </nav>
